@@ -1,6 +1,6 @@
-package com.soprasteria.ai.devs.api.tasks.util;
+package com.soprasteria.ai.devs.api.util;
 
-import com.soprasteria.ai.devs.api.tasks.model.*;
+import com.soprasteria.ai.devs.api.model.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +11,8 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-import static com.soprasteria.ai.devs.api.tasks.Constants.*;
-import static com.soprasteria.ai.devs.api.tasks.util.SecretsUtil.getOpenAIAPIKey;
+import static com.soprasteria.ai.devs.api.Constants.*;
+import static com.soprasteria.ai.devs.api.util.SecretsUtil.getOpenAIAPIKey;
 
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)

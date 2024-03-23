@@ -1,10 +1,10 @@
-package com.soprasteria.ai.devs.api.tasks.task1;
+package com.soprasteria.ai.devs.api.tasks;
 
-import com.soprasteria.ai.devs.api.tasks.model.TaskAnswerResponse;
-import com.soprasteria.ai.devs.api.tasks.model.TokenResponse;
+import com.soprasteria.ai.devs.api.model.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
-import static com.soprasteria.ai.devs.api.tasks.util.AIDevsAPIUtil.*;
+import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
 
 @Slf4j
 public class APITask1 {

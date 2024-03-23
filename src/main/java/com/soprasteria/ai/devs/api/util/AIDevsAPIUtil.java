@@ -1,8 +1,8 @@
-package com.soprasteria.ai.devs.api.tasks.util;
+package com.soprasteria.ai.devs.api.util;
 
-import com.soprasteria.ai.devs.api.tasks.model.TaskAnswerResponse;
-import com.soprasteria.ai.devs.api.tasks.model.TokenRequest;
-import com.soprasteria.ai.devs.api.tasks.model.TokenResponse;
+import com.soprasteria.ai.devs.api.model.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.TokenRequest;
+import com.soprasteria.ai.devs.api.model.TokenResponse;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.http.HttpEntity;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
-import static com.soprasteria.ai.devs.api.tasks.util.SecretsUtil.getAIDevsAPIKey;
+import static com.soprasteria.ai.devs.api.util.SecretsUtil.getAIDevsAPIKey;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class AIDevsAPIUtil {

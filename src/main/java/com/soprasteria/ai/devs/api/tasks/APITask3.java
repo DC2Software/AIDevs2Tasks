@@ -1,15 +1,15 @@
-package com.soprasteria.ai.devs.api.tasks.taks3;
+package com.soprasteria.ai.devs.api.tasks;
 
-import com.soprasteria.ai.devs.api.tasks.model.CompletionsAPIResponse;
-import com.soprasteria.ai.devs.api.tasks.model.OpenAIAPIMessage;
-import com.soprasteria.ai.devs.api.tasks.model.TaskAnswerResponse;
-import com.soprasteria.ai.devs.api.tasks.model.TokenResponse;
+import com.soprasteria.ai.devs.api.model.CompletionsAPIResponse;
+import com.soprasteria.ai.devs.api.model.OpenAIAPIMessage;
+import com.soprasteria.ai.devs.api.model.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
-import static com.soprasteria.ai.devs.api.tasks.util.AIDevsAPIUtil.*;
-import static com.soprasteria.ai.devs.api.tasks.util.OpenAIAPIUtil.callCompletionsAPI;
+import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
+import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletionsAPI;
 
 @Slf4j
 public class APITask3 {

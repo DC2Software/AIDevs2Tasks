@@ -1,4 +1,4 @@
-package com.soprasteria.ai.devs.api.tasks.util;
+package com.soprasteria.ai.devs.api.util;
 
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
@@ -10,7 +10,7 @@ import java.util.Map;
 @Slf4j
 public class SecretsUtil {
 
-    private static Map<String, String> secrets;
+    private static final Map<String, String> secrets;
     static {
         Yaml yaml = new Yaml();
         try (InputStream inputStream = SecretsUtil.class.getClassLoader().getResourceAsStream("secrets.yml")) {

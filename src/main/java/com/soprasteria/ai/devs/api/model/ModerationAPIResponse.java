@@ -1,4 +1,4 @@
-package com.soprasteria.ai.devs.api.tasks.model;
+package com.soprasteria.ai.devs.api.model;
 
 import java.util.List;
 

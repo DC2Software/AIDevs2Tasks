@@ -1,4 +1,4 @@
-package com.soprasteria.ai.devs.api.tasks;
+package com.soprasteria.ai.devs.api;
 
 public interface Constants {
     String OPENAI_MODERATION_API_URL = "https://api.openai.com/v1/moderations";
