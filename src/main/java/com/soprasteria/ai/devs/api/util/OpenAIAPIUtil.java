@@ -14,10 +14,19 @@ import java.util.List;
 import static com.soprasteria.ai.devs.api.Constants.*;
 import static com.soprasteria.ai.devs.api.util.SecretsUtil.getOpenAIAPIKey;
 
+/**
+ * Utility class for interacting with OpenAI APIs.
+ */
 @Slf4j
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class OpenAIAPIUtil {
 
+    /**
+     * Calls OpenAI Completions API to get completion predictions.
+     * @param model the model identifier to use for completion
+     * @param messages list of messages to process for completion
+     * @return CompletionsAPIResponse containing completion results
+     */
     public static CompletionsAPIResponse callCompletionsAPI(String model, List<OpenAIAPIMessage> messages) {
         CompletionsAPIRequest requestBody = new CompletionsAPIRequest(messages, model);
         HttpHeaders headers = new HttpHeaders();
@@ -30,6 +39,11 @@ public class OpenAIAPIUtil {
         return response.getBody();
     }
 
+    /**
+     * Calls OpenAI Moderation API to moderate content.
+     * @param message the message content to be moderated
+     * @return ModerationAPIResponse containing moderation results
+     */
     public static ModerationAPIResponse callModerationAPI(String message) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());

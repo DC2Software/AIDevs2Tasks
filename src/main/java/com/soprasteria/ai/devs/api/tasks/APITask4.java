@@ -14,6 +14,9 @@ import java.util.Map;
 
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
 
+/**
+ * Class for handling API task 4.
+ */
 @Slf4j
 public class APITask4 {
 
@@ -26,6 +29,13 @@ public class APITask4 {
         log.info("Task response: {}", answerResponse);
     }
 
+    /**
+     * Sends a question to the task endpoint and retrieves the API task response.
+     *
+     * @param question the question to send
+     * @param token the authentication token
+     * @return the API task response
+     */
     private static APITaskResponse sendQuestionToTaskEndpoint(String question, String token) {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
@@ -39,7 +49,13 @@ public class APITask4 {
         return taskResponse.getBody();
     }
 
+    /**
+     * DTO used for mapping a response from the API task endpoint.
+     */
     private record APITaskResponse(int code, String msg, String answer) {}
 
+    /**
+     * DTO used for submitting an answer to the API task endpoint.
+     */
     private record APITaskAnswerRequest(String answer) {}
 }
