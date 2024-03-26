@@ -12,7 +12,7 @@ import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
 import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callModerationAPI;
 
 @Slf4j
-public class APITask2 {
+public class APITask2Moderation {
 
     public static void main(String[] args) {
         TokenResponse tokenResponse = fetchToken("moderation");
@@ -26,7 +26,7 @@ public class APITask2 {
 
     private static Stream<Boolean> fetchModerationResponse(List<String> messagesToValidate) {
         return messagesToValidate.stream()
-                .map(APITask2::validateWithModerationAPI);
+                .map(APITask2Moderation::validateWithModerationAPI);
     }
 
     private static boolean validateWithModerationAPI(String message) {

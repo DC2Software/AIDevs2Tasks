@@ -7,7 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
 
 @Slf4j
-public class APITask1 {
+public class APITask1Helloapi {
 	public static void main(String[] args) {
 		TokenResponse tokenResponse = fetchToken("helloapi");
 		APITaskResponse apiTaskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);

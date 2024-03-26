@@ -18,7 +18,7 @@ import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
  * Class for handling API task 4.
  */
 @Slf4j
-public class APITask4 {
+public class APITask4Liar {
 
     public static void main(String[] args) {
         TokenResponse tokenResponse = fetchToken("liar");
