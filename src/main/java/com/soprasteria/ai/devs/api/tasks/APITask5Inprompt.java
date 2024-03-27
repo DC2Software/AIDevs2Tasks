@@ -1,15 +1,15 @@
 package com.soprasteria.ai.devs.api.tasks;
 
-import com.soprasteria.ai.devs.api.model.CompletionsAPIResponse;
-import com.soprasteria.ai.devs.api.model.OpenAIAPIMessage;
-import com.soprasteria.ai.devs.api.model.TaskAnswerResponse;
-import com.soprasteria.ai.devs.api.model.TokenResponse;
+import com.soprasteria.ai.devs.api.model.openai.CompletionsResponse;
+import com.soprasteria.ai.devs.api.model.openai.OpenAIAPIMessage;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
-import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletionsAPI;
+import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletions;
 
 @Slf4j
 public class APITask5Inprompt {
@@ -38,7 +38,7 @@ public class APITask5Inprompt {
 	private record APITaskAnswerRequest(String answer) {}
 
 	private static String resolveNameFromQuestion(String question) {
-		CompletionsAPIResponse response = callCompletionsAPI("gpt-3.5-turbo", List.of(
+		CompletionsResponse response = callCompletions("gpt-3.5-turbo", List.of(
 				new OpenAIAPIMessage("system", "Find a name in the user question and return it. Return only the name."),
 				new OpenAIAPIMessage("user", question)
 		));
@@ -46,7 +46,7 @@ public class APITask5Inprompt {
 	}
 
 	private static String loadAnswerBasedOnContext(String question, String context) {
-		CompletionsAPIResponse response = callCompletionsAPI("gpt-3.5-turbo", List.of(
+		CompletionsResponse response = callCompletions("gpt-3.5-turbo", List.of(
 				new OpenAIAPIMessage("system", "Answer questions as truthfully using the context below and nothing more." +
 						" If you don't know the answer, say \"don't know\". context###" + context + "###"),
 				new OpenAIAPIMessage("user", question)

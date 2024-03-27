@@ -1,8 +1,8 @@
-package com.soprasteria.ai.devs.api.model;
+package com.soprasteria.ai.devs.api.model.openai;
 
 import java.util.List;
 
-public record CompletionsAPIResponse(String id, String object, String model, List<Choices> choices, Usage usage) {
+public record CompletionsResponse(String id, String object, String model, List<Choices> choices, Usage usage) {
 
     public record Choices(int index, Message message, String finish_reason) {}
 

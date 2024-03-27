@@ -1,7 +1,7 @@
 package com.soprasteria.ai.devs.api.examples;
 
-import com.soprasteria.ai.devs.api.model.CompletionsAPIResponse;
-import com.soprasteria.ai.devs.api.model.OpenAIAPIMessage;
+import com.soprasteria.ai.devs.api.model.openai.CompletionsResponse;
+import com.soprasteria.ai.devs.api.model.openai.OpenAIAPIMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FileUtils;
 import org.springframework.util.ResourceUtils;
@@ -11,7 +11,7 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Map;
 
-import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletionsAPI;
+import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletions;
 
 @Slf4j
 public class ContextSelection {
@@ -33,7 +33,7 @@ public class ContextSelection {
     }
 
     private static String selectContextFileByQuery(String query) {
-        CompletionsAPIResponse response = callCompletionsAPI("gpt-3.5-turbo", List.of(
+        CompletionsResponse response = callCompletions("gpt-3.5-turbo", List.of(
                 new OpenAIAPIMessage("system", "Pick one of the following sources related to the user question and return filename and nothing else. " +
                         "Sources###" + buildContextsSelection() + "###"),
                 new OpenAIAPIMessage("user", query)
@@ -52,7 +52,7 @@ public class ContextSelection {
     }
 
     private static String loadAnswerBasedOnContext(String query, String context) {
-        CompletionsAPIResponse response = callCompletionsAPI("gpt-3.5-turbo", List.of(
+        CompletionsResponse response = callCompletions("gpt-3.5-turbo", List.of(
                 new OpenAIAPIMessage("system", "Answer questions as truthfully using the context below and nothing more." +
                         " If you don't know the answer, say \"don't know\". context###" + context + "###"),
                 new OpenAIAPIMessage("user", query)

@@ -1,7 +1,7 @@
 package com.soprasteria.ai.devs.api.tasks;
 
-import com.soprasteria.ai.devs.api.model.TaskAnswerResponse;
-import com.soprasteria.ai.devs.api.model.TokenResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;

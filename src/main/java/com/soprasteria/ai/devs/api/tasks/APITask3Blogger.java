@@ -1,15 +1,15 @@
 package com.soprasteria.ai.devs.api.tasks;
 
-import com.soprasteria.ai.devs.api.model.CompletionsAPIResponse;
-import com.soprasteria.ai.devs.api.model.OpenAIAPIMessage;
-import com.soprasteria.ai.devs.api.model.TaskAnswerResponse;
-import com.soprasteria.ai.devs.api.model.TokenResponse;
+import com.soprasteria.ai.devs.api.model.openai.CompletionsResponse;
+import com.soprasteria.ai.devs.api.model.openai.OpenAIAPIMessage;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
-import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletionsAPI;
+import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletions;
 
 @Slf4j
 public class APITask3Blogger {
@@ -33,9 +33,9 @@ public class APITask3Blogger {
                 .toList();
     }
 
-    private static CompletionsAPIResponse generateBlogPost(String title) {
+    private static CompletionsResponse generateBlogPost(String title) {
         log.info("Generating blog post titled: {} ...", title);
-        return callCompletionsAPI("gpt-3.5-turbo", List.of(
+        return callCompletions("gpt-3.5-turbo", List.of(
                 new OpenAIAPIMessage("user", title),
                 new OpenAIAPIMessage("system", "You're a blog posts generator. Based on title You will generate a blog post. You will answer only with the generated blog post.")));
     }

@@ -1,6 +1,6 @@
 package com.soprasteria.ai.devs.api.util;
 
-import com.soprasteria.ai.devs.api.model.*;
+import com.soprasteria.ai.devs.api.model.openai.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,36 +22,53 @@ import static com.soprasteria.ai.devs.api.util.SecretsUtil.getOpenAIAPIKey;
 public class OpenAIAPIUtil {
 
     /**
-     * Calls OpenAI Completions API to get completion predictions.
+     * Calls OpenAI Completions endpoint to get completion predictions.
      * @param model the model identifier to use for completion
      * @param messages list of messages to process for completion
      * @return CompletionsAPIResponse containing completion results
      */
-    public static CompletionsAPIResponse callCompletionsAPI(String model, List<OpenAIAPIMessage> messages) {
-        CompletionsAPIRequest requestBody = new CompletionsAPIRequest(messages, model);
+    public static CompletionsResponse callCompletions(String model, List<OpenAIAPIMessage> messages) {
+        CompletionsRequest requestBody = new CompletionsRequest(messages, model);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
 
-        HttpEntity<CompletionsAPIRequest> requestEntity = new HttpEntity<>(requestBody, headers);
+        HttpEntity<CompletionsRequest> requestEntity = new HttpEntity<>(requestBody, headers);
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<CompletionsAPIResponse> response = restTemplate.postForEntity(OPENAI_COMPLETIONS_API_URL, requestEntity, CompletionsAPIResponse.class);
+        ResponseEntity<CompletionsResponse> response = restTemplate.postForEntity(OPENAI_COMPLETIONS_URL, requestEntity, CompletionsResponse.class);
         return response.getBody();
     }
 
     /**
-     * Calls OpenAI Moderation API to moderate content.
+     * Calls OpenAI Moderation endpoint to moderate content.
      * @param message the message content to be moderated
      * @return ModerationAPIResponse containing moderation results
      */
-    public static ModerationAPIResponse callModerationAPI(String message) {
+    public static ModerationResponse callModeration(String message) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
-        HttpEntity<ModerationAPIRequest> requestEntity = new HttpEntity<>(new ModerationAPIRequest(message), headers);
+        HttpEntity<ModerationRequest> requestEntity = new HttpEntity<>(new ModerationRequest(message), headers);
 
         RestTemplate restTemplate = new RestTemplate();
-        ResponseEntity<ModerationAPIResponse> response = restTemplate.postForEntity(OPENAI_MODERATION_API_URL, requestEntity, ModerationAPIResponse.class);
+        ResponseEntity<ModerationResponse> response = restTemplate.postForEntity(OPENAI_MODERATION_URL, requestEntity, ModerationResponse.class);
+        return response.getBody();
+    }
+
+    /**
+     * Calls OpenAI Embeddings endpoint to get number array representation of given text.
+     * @param model OpenAI model to use
+     * @param input text to be embedded
+     * @return endpoint response
+     */
+    public static EmbeddingsResponse callEmbeddings(String model, String input) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
+        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        HttpEntity<EmbeddingsRequest> requestEntity = new HttpEntity<>(new EmbeddingsRequest(model, input), headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<EmbeddingsResponse> response = restTemplate.postForEntity(OPENAI_EMBEDDINGS_URL, requestEntity, EmbeddingsResponse.class);
         return response.getBody();
     }
 }

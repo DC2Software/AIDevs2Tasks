@@ -1,15 +1,15 @@
 package com.soprasteria.ai.devs.api.tasks;
 
-import com.soprasteria.ai.devs.api.model.ModerationAPIResponse;
-import com.soprasteria.ai.devs.api.model.TaskAnswerResponse;
-import com.soprasteria.ai.devs.api.model.TokenResponse;
+import com.soprasteria.ai.devs.api.model.openai.ModerationResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.stream.Stream;
 
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
-import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callModerationAPI;
+import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callModeration;
 
 @Slf4j
 public class APITask2Moderation {
@@ -31,7 +31,7 @@ public class APITask2Moderation {
 
     private static boolean validateWithModerationAPI(String message) {
         log.info("Validating message: {}", message);
-        ModerationAPIResponse response = callModerationAPI(message);
+        ModerationResponse response = callModeration(message);
         log.info("Moderation API response: {}", response);
         return response.results().get(0).flagged();
     }
