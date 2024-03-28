@@ -4,9 +4,9 @@ import com.soprasteria.ai.devs.api.model.openai.*;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -31,7 +31,7 @@ public class OpenAIAPIUtil {
         CompletionsRequest requestBody = new CompletionsRequest(messages, model);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
         HttpEntity<CompletionsRequest> requestEntity = new HttpEntity<>(requestBody, headers);
         RestTemplate restTemplate = new RestTemplate();
@@ -47,7 +47,7 @@ public class OpenAIAPIUtil {
     public static ModerationResponse callModeration(String message) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<ModerationRequest> requestEntity = new HttpEntity<>(new ModerationRequest(message), headers);
 
         RestTemplate restTemplate = new RestTemplate();
@@ -64,11 +64,36 @@ public class OpenAIAPIUtil {
     public static EmbeddingsResponse callEmbeddings(String model, String input) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
-        headers.add(HttpHeaders.CONTENT_TYPE, "application/json");
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
         HttpEntity<EmbeddingsRequest> requestEntity = new HttpEntity<>(new EmbeddingsRequest(model, input), headers);
 
         RestTemplate restTemplate = new RestTemplate();
         ResponseEntity<EmbeddingsResponse> response = restTemplate.postForEntity(OPENAI_EMBEDDINGS_URL, requestEntity, EmbeddingsResponse.class);
+        return response.getBody();
+    }
+
+    public static WhisperResponse callTranscription(String model, byte[] audioContent) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
+        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.MULTIPART_FORM_DATA_VALUE);
+
+        MultiValueMap<String, String> fileMap = new LinkedMultiValueMap<>();
+        ContentDisposition contentDisposition = ContentDisposition
+                .builder("form-data")
+                .name("file")
+                .filename("audio.mp3")
+                .build();
+
+        fileMap.add(HttpHeaders.CONTENT_DISPOSITION, contentDisposition.toString());
+        HttpEntity<byte[]> fileEntity = new HttpEntity<>(audioContent, fileMap);
+
+        MultiValueMap<String, Object> formValuesMap = new LinkedMultiValueMap<>();
+        formValuesMap.add("model", model);
+        formValuesMap.add("file", fileEntity);
+        HttpEntity<MultiValueMap<String, Object>> audioFileEntity = new HttpEntity<>(formValuesMap, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<WhisperResponse> response = restTemplate.postForEntity(OPENAI_TRANSCRIPTIONS_URL, audioFileEntity, WhisperResponse.class);
         return response.getBody();
     }
 }
