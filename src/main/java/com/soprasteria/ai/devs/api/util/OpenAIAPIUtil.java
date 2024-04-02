@@ -28,7 +28,15 @@ public class OpenAIAPIUtil {
      * @return CompletionsAPIResponse containing completion results
      */
     public static CompletionsResponse callCompletions(String model, List<OpenAIAPIMessage> messages) {
-        CompletionsRequest requestBody = new CompletionsRequest(messages, model);
+        return callCompletions(new CompletionsRequest(messages, model, null));
+    }
+
+    /**
+     * Calls OpenAI Completions endpoint to get completion predictions.
+     * @param requestBody body of the request to send
+     * @return CompletionsAPIResponse containing completion results
+     */
+    public static CompletionsResponse callCompletions(CompletionsRequest requestBody) {
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + getOpenAIAPIKey());
         headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);

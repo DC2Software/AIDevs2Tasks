@@ -6,11 +6,9 @@ import com.soprasteria.ai.devs.api.model.openai.WhisperResponse;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.net.URLConnection;
 
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
+import static com.soprasteria.ai.devs.api.util.ExternalResourceUtil.readAudioFile;
 import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callTranscription;
 
 @Slf4j
@@ -32,16 +30,4 @@ public class APITask7Whisper {
     private record APITaskResponse(int code, String msg, String hint) {}
 
     private record APITaskAnswerRequest(String answer) {}
-
-    private static byte[] readAudioFile(String fileUrl) throws IOException {
-        byte[] audio;
-        URL audioFileUrl = new URL(fileUrl);
-        URLConnection connection = audioFileUrl.openConnection();
-        try (InputStream is = connection.getInputStream()) {
-            audio = is.readAllBytes();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        return audio;
-    }
 }
