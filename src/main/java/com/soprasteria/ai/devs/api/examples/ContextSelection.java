@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callCompletions;
+import static com.soprasteria.ai.devs.api.util.ResourcesUtil.readTextFileFromClasspath;
 
 @Slf4j
 public class ContextSelection {
@@ -26,7 +27,7 @@ public class ContextSelection {
         String query = "Where does Mateusz work?";
 
         String selectedFileName = selectContextFileByQuery(query);
-        String context = loadContext(selectedFileName);
+        String context = readTextFileFromClasspath("context/selection/" + selectedFileName);
         String answer = loadAnswerBasedOnContext(query, context);
 
         log.info("Answer: {}", answer);

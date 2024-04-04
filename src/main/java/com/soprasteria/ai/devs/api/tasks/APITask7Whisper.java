@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import java.io.IOException;
 
 import static com.soprasteria.ai.devs.api.util.AIDevsAPIUtil.*;
-import static com.soprasteria.ai.devs.api.util.ExternalResourceUtil.readAudioFile;
+import static com.soprasteria.ai.devs.api.util.ResourcesUtil.readAudioFileFromURL;
 import static com.soprasteria.ai.devs.api.util.OpenAIAPIUtil.callTranscription;
 
 @Slf4j
@@ -20,7 +20,7 @@ public class APITask7Whisper {
         log.info("Task: {}", taskResponse);
         String fileUrl = taskResponse.msg().substring(taskResponse.msg().indexOf("https:"));
         log.info("Audio file URL: {}", fileUrl);
-        byte[] audio = readAudioFile(fileUrl);
+        byte[] audio = readAudioFileFromURL(fileUrl);
         WhisperResponse transcriptionResponse = callTranscription("whisper-1", audio);
         log.info("Transcription response: {}", transcriptionResponse.text());
         TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(transcriptionResponse.text()));
