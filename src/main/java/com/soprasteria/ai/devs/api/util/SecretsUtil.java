@@ -1,5 +1,7 @@
 package com.soprasteria.ai.devs.api.util;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.yaml.snakeyaml.Yaml;
 
@@ -11,6 +13,7 @@ import java.util.Map;
  * Utility class for managing and retrieving secrets.
  */
 @Slf4j
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SecretsUtil {
 
     private static final Map<String, String> secrets;
