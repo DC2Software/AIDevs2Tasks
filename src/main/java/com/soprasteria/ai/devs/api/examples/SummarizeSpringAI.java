@@ -27,7 +27,7 @@ import static com.soprasteria.ai.devs.api.util.SecretsUtil.getOpenAIAPIKey;
 @Slf4j
 public class SummarizeSpringAI {
 
-    private static final String SUMMARIZATION_FUNCTION_NAME = "summarization";
+    private static final String SUMMARIZATION_FUNCTION_NAME = "functionName";
 
     private static final String SUMMARIZATION_FUNCTION_DESC = """
                                                              Extend an content and tags of the document from your memory,
@@ -102,20 +102,24 @@ public class SummarizeSpringAI {
         return draftText;
     }
 
-    private static String summarizeWithOpenAI(String chunk) throws JsonProcessingException {
-        var request = new OpenAiApi.ChatCompletionRequest(List.of(
-                new OpenAiApi.ChatCompletionMessage(SYSTEM_PROMPT, OpenAiApi.ChatCompletionMessage.Role.SYSTEM),
-                new OpenAiApi.ChatCompletionMessage(chunk, OpenAiApi.ChatCompletionMessage.Role.USER)),
-                "gpt-4", List.of(new OpenAiApi.FunctionTool(new OpenAiApi.FunctionTool.Function(
-                SUMMARIZATION_FUNCTION_DESC, SUMMARIZATION_FUNCTION_NAME, SUMMARIZATION_FUNCTION_PARAMS_JSON))),
-                OpenAiApi.ChatCompletionRequest.ToolChoiceBuilder.FUNCTION(SUMMARIZATION_FUNCTION_NAME)); // tool_choice has to be an object not a string...
+    private static String summarizeWithOpenAI(String chunk) {
+        try {
+            var request = new OpenAiApi.ChatCompletionRequest(List.of(
+                    new OpenAiApi.ChatCompletionMessage(SYSTEM_PROMPT, OpenAiApi.ChatCompletionMessage.Role.SYSTEM),
+                    new OpenAiApi.ChatCompletionMessage(chunk, OpenAiApi.ChatCompletionMessage.Role.USER)),
+                    "gpt-4", List.of(new OpenAiApi.FunctionTool(new OpenAiApi.FunctionTool.Function(
+                    SUMMARIZATION_FUNCTION_DESC, SUMMARIZATION_FUNCTION_NAME, SUMMARIZATION_FUNCTION_PARAMS_JSON))),
+                    OpenAiApi.ChatCompletionRequest.ToolChoiceBuilder.FUNCTION(SUMMARIZATION_FUNCTION_NAME));
 
-        ObjectMapper mapper = new ObjectMapper();
-        log.info("Request JSON: {}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
-        ResponseEntity<OpenAiApi.ChatCompletion> response = openAiApi.chatCompletionEntity(request);
+            ObjectMapper mapper = new ObjectMapper();
+            log.info("Request JSON: {}", mapper.writerWithDefaultPrettyPrinter().writeValueAsString(request));
+            ResponseEntity<OpenAiApi.ChatCompletion> response = openAiApi.chatCompletionEntity(request);
 
-        log.info("Response body: {}", response.getBody());
-        return "";
+            log.info("Response body: {}", response.getBody());
+            return "";
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Error while parsing request.", e);
+        }
     }
 
     private record FileDto(String author, String name, String title, String excerpt, String content, List<String> tags) {}
