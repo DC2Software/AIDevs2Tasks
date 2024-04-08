@@ -28,6 +28,10 @@ public class SecretsUtil {
         }
     }
 
+    public static String getCountryAPIKey() {
+        return secrets.get("country-api-key");
+    }
+
     /**
      * Retrieves the AI Devs API key from the secrets.
      * @return AI Devs API key

@@ -18,7 +18,6 @@ import static com.soprasteria.ai.devs.api.util.ResourcesUtil.readTextFileFromURL
 
 @Slf4j
 public class APITask13People {
-
     public static void main(String[] args) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         TokenResponse tokenResponse = fetchToken("people");
