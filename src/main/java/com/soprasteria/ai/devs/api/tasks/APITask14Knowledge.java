@@ -5,7 +5,6 @@ import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import com.soprasteria.ai.devs.api.model.countryapi.CountryDetails;
 import com.soprasteria.ai.devs.api.model.currencyapi.ExchangeRateData;
-import com.soprasteria.ai.devs.api.util.CurrencyAPIUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.http.ResponseEntity;
