@@ -1,6 +1,7 @@
 package com.soprasteria.ai.devs.api.tasks;
 
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import com.soprasteria.ai.devs.api.model.openai.EmbeddingsResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,7 @@ public class APITask6Embedding {
 
 	public static void main(String[] args) {
 		TokenResponse tokenResponse = fetchToken("embedding");
-		APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+		TaskResponse taskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
 		log.info("Task: {}", taskResponse);
 
 		EmbeddingsResponse embeddingsResponse = callEmbeddings("text-embedding-ada-002", PHRASE_FOR_EMBEDDING);
@@ -27,7 +28,6 @@ public class APITask6Embedding {
 		log.info("Answer response: {}", answerResponse);
 	}
 
-	private record APITaskResponse(int code, String msg, List<String> input, String question) {}
 
 	private record APITaskAnswerRequest(List<Double> answer) {}
 }

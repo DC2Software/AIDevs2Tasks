@@ -1,7 +1,9 @@
 package com.soprasteria.ai.devs.api.tasks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import com.soprasteria.ai.devs.api.model.countryapi.CountryDetails;
 import com.soprasteria.ai.devs.api.model.currencyapi.ExchangeRateData;
@@ -48,7 +50,7 @@ public class APITask14Knowledge {
     public static void main(String[] args) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         TokenResponse tokenResponse = fetchToken("knowledge");
-        APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+        TaskResponse taskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
         log.info("Task response: {}", taskResponse);
 
         ResponseEntity<OpenAiApi.ChatCompletion> response = openAiApi.chatCompletionEntity(new OpenAiApi.ChatCompletionRequest(List.of(
@@ -66,7 +68,7 @@ public class APITask14Knowledge {
         String answer = categorizationResponse.category().getAnswer(categorizationResponse.argument());
         log.info("Question: {}. System answer: {}.", taskResponse.question(), answer);
 
-        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(answer));
+        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(answer));
         log.info("Answer response: {}", answerResponse);
     }
 
@@ -113,9 +115,6 @@ public class APITask14Knowledge {
             return answerResolver.apply(argument);
         }
     }
-    private record APITaskResponse(int code, String msg, String question) {}
-
-    private record APITaskAnswerRequest(String answer) {}
 
     private record CategorizationResponse(Category category, String argument) {}
 }

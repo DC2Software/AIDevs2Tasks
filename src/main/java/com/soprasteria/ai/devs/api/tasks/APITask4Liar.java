@@ -1,5 +1,6 @@
 package com.soprasteria.ai.devs.api.tasks;
 
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import io.micrometer.common.util.StringUtils;
@@ -25,7 +26,7 @@ public class APITask4Liar {
         APITaskResponse response = sendQuestionToTaskEndpoint("What is the capital of Poland?", tokenResponse.token());
         log.info("AIDevs task endpoint response: {}", response.answer());
         boolean isOk = StringUtils.isNotBlank(response.answer()) && response.answer().matches(".*(?:Warsaw|Warszawa|warsaw|warszawa).*");
-        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(isOk ? "YES" : "NO"));
+        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(isOk ? "YES" : "NO"));
         log.info("Task response: {}", answerResponse);
     }
 
@@ -53,9 +54,4 @@ public class APITask4Liar {
      * DTO used for mapping a response from the API task endpoint.
      */
     private record APITaskResponse(int code, String msg, String answer) {}
-
-    /**
-     * DTO used for submitting an answer to the API task endpoint.
-     */
-    private record APITaskAnswerRequest(String answer) {}
 }

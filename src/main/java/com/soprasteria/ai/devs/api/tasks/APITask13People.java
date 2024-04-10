@@ -2,7 +2,9 @@ package com.soprasteria.ai.devs.api.tasks;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import com.soprasteria.ai.devs.api.model.openai.CompletionsRequest;
 import com.soprasteria.ai.devs.api.model.openai.CompletionsResponse;
@@ -21,7 +23,7 @@ public class APITask13People {
     public static void main(String[] args) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         TokenResponse tokenResponse = fetchToken("people");
-        APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+        TaskResponse taskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
         log.info("Task response: {}", taskResponse);
 
         String jsonDbStr = readTextFileFromURL("https://tasks.aidevs.pl/data/people.json");
@@ -38,7 +40,7 @@ public class APITask13People {
 
         String answer = response.choices().get(0).message().content();
         log.info("GPT-3.5 response: {}", answer);
-        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(answer));
+        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(answer));
         log.info("Answer response: {}", answerResponse);
     }
 
@@ -68,8 +70,4 @@ public class APITask13People {
                               @JsonProperty("ulubiona_postac_z_kapitana_bomby") String favouriteCharacter,
                               @JsonProperty("ulubiony_serial") String favouriteSeries,
                               @JsonProperty("ulubiony_film") String favouriteMovie, @JsonProperty("ulubiony_kolor") String favouriteColor) {}
-
-    private record APITaskResponse(int code, String msg, String question) {}
-
-    private record APITaskAnswerRequest(String answer) {}
 }

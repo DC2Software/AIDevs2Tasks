@@ -1,5 +1,6 @@
 package com.soprasteria.ai.devs.api.tasks;
 
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.openai.ModerationResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
@@ -16,7 +17,7 @@ public class APITask2Moderation {
 
     public static void main(String[] args) {
         TokenResponse tokenResponse = fetchToken("moderation");
-        APITaskResponse apiTaskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+        TaskResponse apiTaskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
         List<Integer> preparedAnswer = fetchModerationResponse(apiTaskResponse.input())
                                             .map(bool -> Boolean.TRUE.equals(bool) ? 1 : 0)
                                             .toList();
@@ -35,8 +36,6 @@ public class APITask2Moderation {
         log.info("Moderation API response: {}", response);
         return response.results().get(0).flagged();
     }
-
-    private record APITaskResponse(int code, String msg, List<String> input) {}
 
     private record APITaskAnswerRequest(List<Integer> answer) {}
 }

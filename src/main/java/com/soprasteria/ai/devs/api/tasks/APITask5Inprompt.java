@@ -1,5 +1,6 @@
 package com.soprasteria.ai.devs.api.tasks;
 
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.openai.CompletionsResponse;
 import com.soprasteria.ai.devs.api.model.openai.OpenAIAPIMessage;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
@@ -29,13 +30,11 @@ public class APITask5Inprompt {
 		String answer = loadAnswerBasedOnContext(apiTaskResponse.question(), context);
 		log.info("Loaded answer: {}", answer);
 
-		TaskAnswerResponse taskAnswerResponse = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(answer));
+		TaskAnswerResponse taskAnswerResponse = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(answer));
 		log.info("API answer response: {}", taskAnswerResponse);
 	}
 
 	private record APITaskResponse(int code, String msg, List<String> input, String question) {}
-
-	private record APITaskAnswerRequest(String answer) {}
 
 	private static String resolveNameFromQuestion(String question) {
 		CompletionsResponse response = callCompletions("gpt-3.5-turbo", List.of(

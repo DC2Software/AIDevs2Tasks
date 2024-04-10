@@ -1,6 +1,8 @@
 package com.soprasteria.ai.devs.api.tasks;
 
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,14 +40,10 @@ public class APITask9Rodo {
 
     public static void main(String[] args) throws IOException {
         TokenResponse tokenResponse = fetchToken("rodo");
-        APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+        TaskResponse taskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
         log.info("Task: {}", taskResponse);
 
-        TaskAnswerResponse response = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(userPromptPolish));
+        TaskAnswerResponse response = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(userPromptPolish));
         log.info("Answer response: {}", response);
     }
-
-    private record APITaskResponse(int code, String msg, String hint) {}
-
-    private record APITaskAnswerRequest(String answer) {}
 }

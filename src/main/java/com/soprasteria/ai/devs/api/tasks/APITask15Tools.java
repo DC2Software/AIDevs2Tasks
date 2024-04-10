@@ -1,8 +1,8 @@
 package com.soprasteria.ai.devs.api.tasks;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.openai.api.OpenAiApi;
@@ -20,7 +20,6 @@ import static com.soprasteria.ai.devs.api.util.SecretsUtil.getOpenAIAPIKey;
 
 @Slf4j
 public class APITask15Tools {
-    private static final ObjectMapper mapper = new ObjectMapper();
     private static final OpenAiApi openAiApi = new OpenAiApi(getOpenAIAPIKey());
 
     private static final String TODO_FUNCTION_NAME = "TODO";
@@ -73,7 +72,7 @@ public class APITask15Tools {
     public static void main(String[] args) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         TokenResponse tokenResponse = fetchToken("tools");
-        APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+        TaskResponse taskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
         log.info("Task response: {}", taskResponse);
 
         ResponseEntity<OpenAiApi.ChatCompletion> response =
@@ -133,8 +132,6 @@ public class APITask15Tools {
     private record TodoTool(String tool, String desc) {}
 
     private record CalendarTool(String tool, String desc, String date) {}
-
-    private record APITaskResponse(int code, String msg, String question) {}
 
     private record APITaskAnswerRequest(Object answer) {}
 }

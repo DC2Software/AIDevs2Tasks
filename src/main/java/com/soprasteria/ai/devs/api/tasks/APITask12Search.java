@@ -2,7 +2,9 @@ package com.soprasteria.ai.devs.api.tasks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.document.Document;
@@ -34,14 +36,14 @@ public class APITask12Search {
         vectorStore.add(docs);
 
         TokenResponse tokenResponse = fetchToken("search");
-        APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+        TaskResponse taskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
         log.info("Task response: {}", taskResponse);
 
         Document foundDoc = vectorStore.similaritySearch(SearchRequest.query(taskResponse.question()).withTopK(1))
                                         .stream()
                                         .findFirst()
                                         .orElseThrow();
-        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(String.valueOf(foundDoc.getMetadata().get("url"))));
+        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(String.valueOf(foundDoc.getMetadata().get("url"))));
         log.info("Answer response: {}", answerResponse);
     }
 
@@ -64,8 +66,4 @@ public class APITask12Search {
     private record Archive(List<ArchiveData> archives) {}
 
     private record ArchiveData(String title, String url, String info, LocalDate date) {}
-
-    private record APITaskResponse(int code, String msg, String question) {}
-
-    private record APITaskAnswerRequest(String answer) {}
 }

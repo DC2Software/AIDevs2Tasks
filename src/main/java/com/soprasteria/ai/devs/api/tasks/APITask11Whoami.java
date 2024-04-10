@@ -1,6 +1,8 @@
 package com.soprasteria.ai.devs.api.tasks;
 
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import com.soprasteria.ai.devs.api.model.openai.CompletionsRequest;
 import com.soprasteria.ai.devs.api.model.openai.CompletionsResponse;
@@ -39,7 +41,7 @@ public class APITask11Whoami {
 
         int requestsCounter = 0;
         do {
-            APITaskResponse taskResponse = tryFetchTask();
+            TaskResponse taskResponse = tryFetchTask();
             log.info("Next hint: {}", taskResponse.hint());
             conversation.add(new OpenAIAPIMessage("user", taskResponse.hint()));
 
@@ -48,15 +50,15 @@ public class APITask11Whoami {
             log.info("Model answer: {}", modelResponse);
             conversation.add(new OpenAIAPIMessage("assistant", modelResponse));
         } while ((modelResponse == null || modelResponse.equalsIgnoreCase(NOK_MODEL_ANSWER)) && ++requestsCounter < REQUESTS_LIMIT);
-        TaskAnswerResponse answerResponse = submitTaskAnswer(aiDevsToken, new APITaskAnswerRequest(modelResponse));
+        TaskAnswerResponse answerResponse = submitTaskAnswer(aiDevsToken, new AnswerRequest(modelResponse));
         log.info("Answer response: {}", answerResponse);
     }
 
-    private static APITaskResponse tryFetchTask() throws InterruptedException {
+    private static TaskResponse tryFetchTask() throws InterruptedException {
         try {
             TokenResponse tokenResponse = fetchToken("whoami");
             aiDevsToken = tokenResponse.token();
-            return fetchTask(tokenResponse.token(), APITaskResponse.class);
+            return fetchTask(tokenResponse.token(), TaskResponse.class);
         } catch (Exception e) {
             log.warn("Not able to fetch the task. Message: {}", e.getMessage());
             log.info("Waiting " + WAIT_SEC + " seconds and retrying...");
@@ -64,8 +66,4 @@ public class APITask11Whoami {
             return tryFetchTask();
         }
     }
-
-    private record APITaskResponse(int code, String msg, String hint) {}
-
-    private record APITaskAnswerRequest(String answer) {}
 }

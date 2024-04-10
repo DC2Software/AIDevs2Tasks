@@ -2,6 +2,7 @@ package com.soprasteria.ai.devs.api.tasks;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
+import com.soprasteria.ai.devs.api.model.aidevs.TaskResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import lombok.extern.slf4j.Slf4j;
 
@@ -15,7 +16,7 @@ public class APITask8Functions {
 
     public static void main(String[] args) throws IOException {
         TokenResponse tokenResponse = fetchToken("functions");
-        APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
+        TaskResponse taskResponse = fetchTask(tokenResponse.token(), TaskResponse.class);
         log.info("Task: {}", taskResponse);
         FunctionDefinition functionDefinition = new FunctionDefinition("addUser", "Function for adding new users.",
                 new FunctionParams("object", Map.of(
@@ -29,8 +30,6 @@ public class APITask8Functions {
         TaskAnswerResponse response = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(functionDefinition));
         log.info("Answer response: {}", response);
     }
-
-    private record APITaskResponse(int code, String msg, String hint) {}
 
     private record APITaskAnswerRequest(FunctionDefinition answer) {}
 

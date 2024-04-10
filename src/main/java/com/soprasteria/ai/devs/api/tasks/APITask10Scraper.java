@@ -1,5 +1,6 @@
 package com.soprasteria.ai.devs.api.tasks;
 
+import com.soprasteria.ai.devs.api.model.aidevs.AnswerRequest;
 import com.soprasteria.ai.devs.api.model.aidevs.TaskAnswerResponse;
 import com.soprasteria.ai.devs.api.model.aidevs.TokenResponse;
 import com.soprasteria.ai.devs.api.model.openai.CompletionsRequest;
@@ -35,7 +36,7 @@ public class APITask10Scraper {
                 new OpenAIAPIMessage("user", taskResponse.question())), "gpt-3.5-turbo", 200)
         );
         String questionResponse = response.choices().get(0).message().content();
-        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new APITaskAnswerRequest(questionResponse));
+        TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(questionResponse));
         log.info("Answer response: {}", answerResponse);
     }
 
@@ -62,6 +63,4 @@ public class APITask10Scraper {
     }
 
     private record APITaskResponse(int code, String msg, String input, String question) {}
-
-    private record APITaskAnswerRequest(String answer) {}
 }
