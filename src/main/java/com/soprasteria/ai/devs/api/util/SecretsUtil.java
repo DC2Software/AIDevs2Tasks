@@ -47,4 +47,12 @@ public class SecretsUtil {
     public static String getOpenAIAPIKey() {
         return secrets.get("openai-api-key");
     }
+
+    /**
+     * Retrieves the RenderForm API key from the secrets.
+     * @return RenderForm API key
+     */
+    public static String getRenderFormAPIKey() {
+        return secrets.get("renderform-api-key");
+    }
 }
