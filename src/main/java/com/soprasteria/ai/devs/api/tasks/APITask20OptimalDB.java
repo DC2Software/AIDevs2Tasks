@@ -42,23 +42,29 @@ public class APITask20OptimalDB {
                 ###
             """;
 
+    private static final String DB_FILE_PATH = "context/optimaldb.md";
+
     public static void main(String[] args) throws IOException {
 
         TokenResponse tokenResponse = fetchToken("optimaldb");
         APITaskResponse taskResponse = fetchTask(tokenResponse.token(), APITaskResponse.class);
         log.info("Task response: {}", taskResponse);
 
-//        Database database = loadDatabase(taskResponse.database());
-//        String optimizedData = optimizeDatabase(database);
+//        loadOptimizeAndSaveData(taskResponse.database());
 
-
-        String optimizedData = ResourcesUtil.readTextFileFromClasspath("context/optimaldb.md");
+        String optimizedData = ResourcesUtil.readTextFileFromClasspath(DB_FILE_PATH);
 
         log.info("Optimized DB size: {} bytes.", optimizedData.length());
         log.info("Optimized DB: {}", optimizedData);
 
         TaskAnswerResponse answerResponse = submitTaskAnswer(tokenResponse.token(), new AnswerRequest(optimizedData));
         log.info("Answer response: {}", answerResponse);
+    }
+
+    private static void loadOptimizeAndSaveData(String data) throws IOException {
+        Database database = loadDatabase(data);
+        String optimizedData = optimizeDatabase(database);
+        ResourcesUtil.writeTextFileInClasspath(DB_FILE_PATH, optimizedData);
     }
 
     private static Database loadDatabase(String databaseUrl) throws IOException {

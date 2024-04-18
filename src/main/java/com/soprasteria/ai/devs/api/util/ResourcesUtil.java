@@ -3,7 +3,9 @@ package com.soprasteria.ai.devs.api.util;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -41,5 +43,18 @@ public class ResourcesUtil {
             audio = is.readAllBytes();
         }
         return audio;
+    }
+
+    public static void writeTextFileInClasspath(String filePath, String content) {
+        URL fileUrl = ResourcesUtil.class.getClassLoader().getResource(filePath);
+        if (fileUrl != null) {
+            try {
+                FileUtils.writeStringToFile(new File(fileUrl.toURI().getPath()), content, Charset.defaultCharset());
+            } catch (Exception e) {
+                throw new RuntimeException("Couldn't write content to the file specified.", e);
+            }
+        } else {
+            throw new RuntimeException("Could not find the file specified: " + filePath);
+        }
     }
 }
